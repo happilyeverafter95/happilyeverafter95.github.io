@@ -1,6 +1,8 @@
 ## My personal website
 
-I am using the (jekyll-now)[https://github.com/barryclark/jekyll-now] template to build my GitHub pages.
+URL: https://happilyeverafter95.github.io/
+
+I am using the [jekyll-now](https://github.com/barryclark/jekyll-now) template to build my GitHub pages.
 
 ## Local Development
 
