@@ -10,11 +10,6 @@ I am a team lead at Wealthsimple building data products for the client experienc
 
 Prior to that, I was at a startup building conversational AI where I primarily worked on the question-answering component.
 
-This year, I became a mom for the first time ❤️ 👶
-
-<p align="center">
-<img src="/images/penny.jpeg" alt="baby tax" width="200"/>
-</p>
 
 # Contact me
 
