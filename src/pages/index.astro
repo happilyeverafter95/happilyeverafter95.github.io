@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { isPublishedPost, sortByPubDateDesc, formatPostDate } from '../utils/blog';
+import { siteDescription, siteTitle } from '../site.config';
+
+const allPosts = await getCollection('blog');
+const latest = allPosts.filter(isPublishedPost).sort(sortByPubDateDesc).slice(0, 4);
+---
+
+<BaseLayout title={siteTitle} description={siteDescription} canonicalPath="/">
+	<section class="relative mb-16 sm:mb-24">
+		<p
+			class="text-accent font-display mb-4 text-sm font-medium uppercase tracking-[0.2em] sm:text-base"
+		>
+			Hello there
+		</p>
+		<h1
+			class="font-display text-ink mb-8 max-w-2xl text-[clamp(2.25rem,6vw,3.5rem)] font-semibold leading-[1.1] tracking-tight"
+		>
+			I build things on the web and write about the bits worth keeping.
+		</h1>
+		<p class="text-muted max-w-xl text-lg leading-relaxed sm:text-xl">
+			Stay tuned.
+		</p>
+		<div
+			class="from-accent/20 pointer-events-none absolute -right-8 top-0 -z-10 h-48 w-48 rounded-full bg-gradient-to-br to-transparent blur-2xl sm:h-64 sm:w-64"
+			aria-hidden="true"
+		></div>
+	</section>
+
+	<section class="mb-16">
+		<h2 class="font-display text-ink mb-8 text-2xl font-semibold tracking-tight">
+			Latest from the blog
+		</h2>
+		<ul class="flex flex-col gap-5">
+			{
+				latest.map((post) => (
+					<li>
+						<a
+							href={`/blog/${post.id}/`}
+							class="card-hover group bg-paper border-ink/10 flex flex-col gap-2 rounded-xl border p-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+						>
+							<span class="font-display text-ink group-hover:text-accent text-lg font-semibold transition-colors">
+								{post.data.title}
+							</span>
+							<time
+								class="text-muted shrink-0 text-sm"
+								datetime={post.data.pubDate.toISOString()}
+							>
+								{formatPostDate(post.data.pubDate)}
+							</time>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		{
+			latest.length === 0 && (
+				<p class="text-muted text-lg">
+					No posts yet. Add markdown under <code class="text-ink bg-paper-muted rounded px-1.5 py-0.5 font-mono text-sm">src/content/blog/</code>.
+				</p>
+			)
+		}
+		<p class="text-muted mt-8">
+			<a href="/blog" class="font-medium text-accent hover:text-accent-bright">View all posts →</a>
+		</p>
+	</section>
+
+	<section
+		class="border-ink/10 from-paper-muted/80 border-ink/5 rounded-2xl border bg-gradient-to-br to-transparent p-8 sm:p-10"
+	>
+		<h2 class="font-display text-ink mb-3 text-xl font-semibold">Stay tuned</h2>
+		<p class="text-muted max-w-lg leading-relaxed">
+			Stay tuned
+		</p>
+	</section>
+</BaseLayout>

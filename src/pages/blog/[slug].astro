@@ -1,0 +1,70 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatPostDate } from '../../utils/blog';
+
+export async function getStaticPaths() {
+	const all = await getCollection('blog');
+	const posts = import.meta.env.PROD ? all.filter((e) => !e.data.draft) : all;
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const canonicalPath = `/blog/${post.id}/`;
+const modified = post.data.updatedDate ?? post.data.pubDate;
+---
+
+<BaseLayout
+	title={post.data.title}
+	description={post.data.description}
+	canonicalPath={canonicalPath}
+	ogType="article"
+	articlePublishedTime={post.data.pubDate.toISOString()}
+	articleModifiedTime={modified.toISOString()}
+>
+	<article>
+		<header class="mb-12">
+			<div class="text-muted mb-4 flex flex-wrap items-center gap-2 text-sm">
+				<time datetime={post.data.pubDate.toISOString()}>
+					{formatPostDate(post.data.pubDate)}
+				</time>
+				{import.meta.env.DEV && post.data.draft && (
+					<span class="bg-accent/15 text-accent rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">
+						Draft
+					</span>
+				)}
+			</div>
+			<h1 class="font-display text-ink text-4xl font-semibold tracking-tight sm:text-5xl">
+				{post.data.title}
+			</h1>
+			<p class="text-muted mt-5 max-w-2xl text-xl leading-relaxed">{post.data.description}</p>
+			{
+				post.data.tags && post.data.tags.length > 0 && (
+					<ul class="mt-8 flex flex-wrap gap-2">
+						{post.data.tags.map((tag) => (
+							<li class="bg-paper-muted text-muted rounded-full px-3 py-1 text-sm font-medium">
+								{tag}
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</header>
+		<div class="md-post">
+			<Content />
+		</div>
+		<footer class="border-ink/10 mt-16 border-t pt-10">
+			<a
+				href="/blog"
+				class="font-medium text-accent transition-colors hover:text-accent-bright"
+			>
+				← All posts
+			</a>
+		</footer>
+	</article>
+</BaseLayout>

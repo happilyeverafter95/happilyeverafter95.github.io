@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isPublishedPost, sortByPubDateDesc, formatPostDate } from '../../utils/blog';
+import { siteDescription, siteTitle } from '../../site.config';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts.filter(isPublishedPost).sort(sortByPubDateDesc);
+---
+
+<BaseLayout title="Blog" description={siteDescription} canonicalPath="/blog">
+	<div class="mb-12">
+		<h1
+			class="font-display text-ink mb-4 text-4xl font-semibold tracking-tight sm:text-5xl"
+		>
+			Blog
+		</h1>
+		<p class="text-muted max-w-xl text-lg leading-relaxed">
+			Nosts from {siteTitle}.
+		</p>
+	</div>
+	<ul class="flex flex-col gap-6">
+		{
+			posts.map((post) => (
+				<li>
+					<a
+						href={`/blog/${post.id}/`}
+						class="card-hover group bg-paper border-ink/10 block rounded-2xl border p-6 sm:p-8"
+					>
+						<div class="text-muted mb-2 flex flex-wrap items-center gap-2 text-sm">
+							<time datetime={post.data.pubDate.toISOString()}>
+								{formatPostDate(post.data.pubDate)}
+							</time>
+							{import.meta.env.DEV && post.data.draft && (
+								<span class="bg-accent/15 text-accent rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">
+									Draft
+								</span>
+							)}
+						</div>
+						<h2 class="font-display text-ink group-hover:text-accent mb-2 text-2xl font-semibold tracking-tight transition-colors">
+							{post.data.title}
+						</h2>
+						<p class="text-muted leading-relaxed">{post.data.description}</p>
+						{post.data.tags && post.data.tags.length > 0 && (
+							<ul class="mt-4 flex flex-wrap gap-2">
+								{post.data.tags.map((tag) => (
+									<li class="bg-paper-muted text-muted rounded-full px-3 py-1 text-xs font-medium">
+										{tag}
+									</li>
+								))}
+							</ul>
+						)}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+	{
+		posts.length === 0 && (
+			<p class="text-muted text-lg">No posts yet—add markdown files under src/content/blog/.</p>
+		)
+	}
+</BaseLayout>

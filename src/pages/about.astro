@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteTitle } from '../site.config';
+---
+
+<BaseLayout
+	title="About"
+	description={`About ${siteTitle}—background, interests, and how to connect.`}
+	canonicalPath="/about"
+>
+	<h1 class="font-display text-ink mb-8 text-4xl font-semibold tracking-tight sm:text-5xl">
+		About
+	</h1>
+	<div class="md-post max-w-2xl">
+		I will eventually fill this out
+	</div>
+</BaseLayout>

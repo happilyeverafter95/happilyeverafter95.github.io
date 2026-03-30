@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="That page does not exist." canonicalPath="/404">
+	<h1 class="font-display text-ink mb-4 text-4xl font-semibold tracking-tight">404</h1>
+	<p class="text-muted mb-10 max-w-md text-lg leading-relaxed">
+		This URL doesn’t match anything on the site. Maybe it moved, or maybe the link was typo’d.
+	</p>
+	<a
+		href="/"
+		class="bg-accent text-paper hover:bg-accent-bright inline-flex rounded-full px-6 py-3 text-sm font-semibold transition-colors"
+	>
+		Back home
+	</a>
+</BaseLayout>

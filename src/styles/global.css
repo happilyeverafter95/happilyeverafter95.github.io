@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+	--font-display: "Fraunces", Georgia, "Times New Roman", serif;
+	--font-sans: "Outfit", system-ui, sans-serif;
+	--color-paper: #f7f3ec;
+	--color-paper-muted: #efe8dc;
+	--color-ink: #1c1917;
+	--color-muted: #57534e;
+	--color-accent: #c2410c;
+	--color-accent-bright: #ea580c;
+	--color-code-bg: #292524;
+	--color-code-fg: #fafaf9;
+}
+
+@layer base {
+	html {
+		@apply motion-safe:scroll-smooth;
+	}
+}
+
+/* Subtle noise overlay */
+.grain {
+	pointer-events: none;
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	opacity: 0.04;
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Markdown body (blog posts) */
+.md-post {
+	@apply font-sans text-lg leading-relaxed text-ink;
+}
+
+.md-post > * + * {
+	@apply mt-5;
+}
+
+.md-post h2 {
+	@apply font-display mt-12 text-3xl font-semibold tracking-tight text-ink first:mt-0;
+}
+
+.md-post h3 {
+	@apply font-display mt-10 text-2xl font-semibold tracking-tight text-ink;
+}
+
+.md-post a {
+	@apply font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-bright hover:decoration-accent-bright;
+}
+
+.md-post strong {
+	@apply font-semibold text-ink;
+}
+
+.md-post ul,
+.md-post ol {
+	@apply my-5 pl-7;
+}
+
+.md-post ul {
+	@apply list-disc;
+}
+
+.md-post ol {
+	@apply list-decimal;
+}
+
+.md-post li {
+	@apply mt-2 pl-1;
+}
+
+.md-post blockquote {
+	@apply border-accent/40 font-display text-muted border-l-4 py-1 pl-5 text-xl italic;
+}
+
+.md-post code {
+	@apply rounded bg-paper-muted px-1.5 py-0.5 font-mono text-[0.9em] text-ink;
+}
+
+.md-post pre {
+	@apply border-ink/10 my-8 overflow-x-auto rounded-xl border bg-code-bg p-5 text-[0.9em] shadow-inner;
+}
+
+.md-post pre code {
+	@apply bg-transparent p-0 text-code-fg;
+}
+
+.md-post hr {
+	@apply border-ink/10 my-12 border-t-2;
+}
+
+/* Card hover lift */
+.card-hover {
+	@apply transition-[transform,box-shadow] duration-300 ease-out;
+}
+
+.card-hover:hover {
+	@apply shadow-accent/10 -translate-y-0.5 shadow-lg;
+}
